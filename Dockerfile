@@ -4,7 +4,7 @@ FROM node:16-alpine
 WORKDIR /app
 
 # Copy Packages file
-COPY packages*.json .
+COPY package*.json .
 
 # Install the packages
 RUN npm install
