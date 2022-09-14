@@ -34,12 +34,12 @@ jobs:
         uses: appleboy/ssh-action@master
 
         with:
-          host: ${{secrets.HOST_IP_ADDRESS}}
-          username: ${{secrets.HOST_USERNAME}}
-          key: ${{secrets.HOST_SSH_KEY}}
-          port: ${{secrets.HOST_SSH_PORT}}
+          host: ${{ secrets.HOST_IP_ADDRESS }}
+          username: ${{ secrets.HOST_USERNAME }}
+          key: ${{ secrets.HOST_SSH_KEY }}
+          port: ${{ secrets.HOST_SSH_PORT }}
 
-          scripts: |
+          script: |
             cd ~/user-auth/
             git pull origin master
             npm install --production
