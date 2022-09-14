@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/index.js"
+    "dev": "node src/index.js",
+    "prod": "pm2 stop index && pm2 start src/index.js"
   },
   "repository": {
     "type": "git",
