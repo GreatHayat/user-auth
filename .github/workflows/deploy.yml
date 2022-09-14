@@ -43,4 +43,3 @@ jobs:
             cd ~/user-auth/
             git pull origin master
             npm install
-            npm run prod
