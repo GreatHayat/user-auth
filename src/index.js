@@ -8,7 +8,7 @@ const app = express();
 
 // DB Connection
 mongoose
-  .connect("mongodb://localhost:27017/auth-db")
+  .connect(`${process.env.MONGO_URI}/auth-db`)
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.log(`Couldn't connected to MongoDB`, error));
 
