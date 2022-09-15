@@ -5,9 +5,11 @@ const {
   joiValidationError,
   generateHash,
   compareHash,
+  generateJWTAuthToken,
 } = require("../../utils/helpers");
 const { createUserValidation, loginValidation } = require("./validationSchema");
 const asyncHandler = require("../../middlewares/async");
+const isAuthenticated = require("../../middlewares/auth");
 
 class UserController {
   static router;
@@ -60,7 +62,12 @@ class UserController {
       return BadRequestError("Invalid credentials", 400);
     }
 
-    const token = user.getAuthToken();
+    const token = generateJWTAuthToken({
+      id: user._id,
+      email,
+      isAdmin: user.isAdmin,
+    });
+
     const response = {
       id: user._id,
       email: user.email,

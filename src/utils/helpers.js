@@ -22,10 +22,14 @@ const compareHash = (rawString, hashString) => {
 const generateJWTAuthToken = ({ id, email, isAdmin }) =>
   jwt.sign({ id, email, isAdmin }, process.env.JWT_SECRET_KEY);
 
+const validateJwtToken = (token) =>
+  jwt.verify(token, process.env.JWT_SECRET_KEY);
+
 module.exports = {
   BadRequestError,
   joiValidationError,
   generateHash,
   generateJWTAuthToken,
   compareHash,
+  validateJwtToken,
 };
