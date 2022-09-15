@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { BadRequest } = require("./error");
 
 const BadRequestError = (message, code) => {
@@ -13,4 +14,12 @@ const generateHash = (text) => {
   return hash;
 };
 
-module.exports = { BadRequestError, joiValidationError, generateHash };
+const generateJWTAuthToken = ({ id, email, isAdmin }) =>
+  jwt.sign({ id, email, isAdmin }, process.env.JWT_SECRET_KEY);
+
+module.exports = {
+  BadRequestError,
+  joiValidationError,
+  generateHash,
+  generateJWTAuthToken,
+};

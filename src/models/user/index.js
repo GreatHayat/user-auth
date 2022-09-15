@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const { generateJWTAuthToken } = require("../../utils/helpers");
 
 const UserSchema = new Schema({
   username: {
@@ -32,5 +33,12 @@ const UserSchema = new Schema({
 });
 
 const User = model("Users", UserSchema);
+
+UserSchema.methods.getAuthToken = () =>
+  generateJWTAuthToken({
+    id: this._id,
+    email: this.email,
+    isAdmin: this.isAdmin,
+  });
 
 exports.User = User;
