@@ -4,8 +4,9 @@ const {
   BadRequestError,
   joiValidationError,
   generateHash,
+  compareHash,
 } = require("../../utils/helpers");
-const { createUserValidation } = require("./validationSchema");
+const { createUserValidation, loginValidation } = require("./validationSchema");
 const asyncHandler = require("../../middlewares/async");
 
 class UserController {
@@ -15,6 +16,7 @@ class UserController {
     this.router = Router();
 
     this.router.post("/register", asyncHandler(this.createUser));
+    this.router.post("/login", asyncHandler(this.login));
     return this.router;
   }
 
@@ -37,6 +39,37 @@ class UserController {
     await user.save();
 
     res.send({ status: "success", user });
+  }
+
+  static async login(req, res) {
+    const { body: loginPayload } = req;
+
+    const { email, password } = loginPayload;
+    const { error } = loginValidation(loginPayload);
+    if (error) {
+      return BadRequestError(joiValidationError(error), 400);
+    }
+
+    const user = await User.findOne({ email, isActive: true });
+    if (!user) {
+      return BadRequestError("Invalid credentials", 400);
+    }
+
+    const isPasswordValid = compareHash(password, user.password);
+    if (!isPasswordValid) {
+      return BadRequestError("Invalid credentials", 400);
+    }
+
+    const token = user.getAuthToken();
+    const response = {
+      id: user._id,
+      email: user.email,
+      username: user.username,
+      isAdmin: user.isAdmin,
+      token,
+    };
+
+    res.status(200).send({ status: "success", user: response });
   }
 }
 

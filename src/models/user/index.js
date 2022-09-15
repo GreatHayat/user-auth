@@ -32,13 +32,13 @@ const UserSchema = new Schema({
   },
 });
 
-const User = model("Users", UserSchema);
-
 UserSchema.methods.getAuthToken = () =>
   generateJWTAuthToken({
     id: this._id,
     email: this.email,
     isAdmin: this.isAdmin,
   });
+
+const User = model("Users", UserSchema);
 
 exports.User = User;

@@ -14,6 +14,11 @@ const generateHash = (text) => {
   return hash;
 };
 
+const compareHash = (rawString, hashString) => {
+  const isValid = bcrypt.compareSync(rawString, hashString);
+  return isValid;
+};
+
 const generateJWTAuthToken = ({ id, email, isAdmin }) =>
   jwt.sign({ id, email, isAdmin }, process.env.JWT_SECRET_KEY);
 
@@ -22,4 +27,5 @@ module.exports = {
   joiValidationError,
   generateHash,
   generateJWTAuthToken,
+  compareHash,
 };

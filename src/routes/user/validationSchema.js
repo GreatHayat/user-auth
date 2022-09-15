@@ -12,4 +12,13 @@ const createUserValidation = (user) => {
   return schema.validate(user);
 };
 
-module.exports = { createUserValidation };
+const loginValidation = (user) => {
+  const schema = Joi.object().keys({
+    email: Joi.string().required().email().label("Email"),
+    password: Joi.string().min(8).required().label("Password"),
+  });
+
+  return schema.validate(user);
+};
+
+module.exports = { createUserValidation, loginValidation };
