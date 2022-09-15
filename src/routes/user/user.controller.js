@@ -17,9 +17,23 @@ class UserController {
   static getRouter() {
     this.router = Router();
 
+    this.router.get("/", isAuthenticated, asyncHandler(this.getUserProfile));
     this.router.post("/register", asyncHandler(this.createUser));
     this.router.post("/login", asyncHandler(this.login));
     return this.router;
+  }
+
+  static async getUserProfile(req, res) {
+    const {
+      user: { id },
+    } = req;
+
+    const user = await User.findById(id);
+    if (!user) {
+      return BadRequestError("Invalid credentials", 400);
+    }
+
+    res.status(200).send(user);
   }
 
   static async createUser(req, res) {
