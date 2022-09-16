@@ -1,6 +1,13 @@
 version: "3.8"
 
 services:
+  db:
+    restart: unless-stopped
+    image: mongo
+    ports:
+      - "27017:27017"
+    container_name: mongod-db-container
+
   web:
     restart: unless-stopped
     build:
@@ -14,10 +21,5 @@ services:
       - "5001:5001"
     links:
       - db
-
-  db:
-    restart: unless-stopped
-    image: mongo
-    ports:
-      - "27017:27017"
-    container_name: mongod-db-container
+    depends_on:
+      - db
